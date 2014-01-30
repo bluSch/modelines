@@ -50,11 +50,17 @@ def check_modeline(line_num, flags):
 class DetectModelinesCommand(sublime_plugin.EventListener):
 
     def _check_first_line(self, view):
-        print(view.line_endings())
+        line_ending = view.line_endings()
 
-    def on_load(self, view):
+        point = 0
+        for lnum in range(5):
+            start = point
+            while view.substr(sublime.Region(point, point + 1)) != '\n':
+                point += 1
+            print(view.substr(sublime.Region(start, point)))
+            point += 1
+
+    def on_post_save(self, view):
         self._check_first_line(view)
 
-    def on_post_save_async(self, view):
-        self._check_first_line(view)
 
